@@ -10,20 +10,20 @@
 
 namespace ns3 {
 
- 
-class NetworkHelper
-{
+class NetworkHelper {
 public:
-    NetworkHelper (uint32_t totalNoNodes);
+    NetworkHelper(int totalNoNodes); // 构造函数
 
-    std::map<uint32_t, std::vector<Ipv4Address>>   m_nodesConnectionsIps;
-    
-    ApplicationContainer Install (NodeContainer c);
+    std::map<uint32_t, std::vector<Ipv4Address>> nodesConnectionsIps; // 邻接表
+
+    ApplicationContainer Install(NodeContainer c);
+
+    // TODO:缺少设置参数
 
 private:
-    ObjectFactory               m_factory;
-    int                         m_nodeNo;              
+    ObjectFactory m_factory;
+    int nodeNums;
 };
-}
+} // namespace ns3
 
 #endif

@@ -1,3 +1,5 @@
+set(OPENSSL_LIBRARIES "-lssl -lcrypto")
+
 build_lib(
   LIBNAME applications
   SOURCE_FILES
@@ -26,6 +28,10 @@ build_lib(
     model/udp-trace-client.cc
     helper/network-helper.cc
     model/pbft-node.cc
+    model/block.cc
+    model/message.cc
+    model/crypto.cc
+    
   HEADER_FILES
     helper/bulk-send-helper.h
     helper/on-off-helper.h
@@ -52,10 +58,33 @@ build_lib(
     model/udp-trace-client.h
     helper/network-helper.h
     model/pbft-node.h
+    model/block.h
+    model/message.h
+    model/crypto.h
   LIBRARIES_TO_LINK ${libinternet}
                     ${libstats}
+                    ${OPENSSL_LIBRARIES}
   TEST_SOURCES
     test/three-gpp-http-client-server-test.cc
     test/bulk-send-application-test-suite.cc
     test/udp-client-server-test.cc
 )
+
+# if (NOT EVENT__DISABLE_OPENSSL)
+#     set(OPENSSL_USE_STATIC_LIBS TRUE)
+#     set(OPENSSL_CRYPTO_LIBRARY "/home/zhangjiyuan/.local/openssl/lib")
+#     set(OPENSSL_INCLUDE_DIR "/home/zhangjiyuan/.local/openssl/include")
+
+#     find_package(OpenSSL REQUIRED)
+
+#     set(EVENT__HAVE_OPENSSL 1)  
+
+#     message(STATUS "OpenSSL include: ${OPENSSL_INCLUDE_DIR}")
+#     message(STATUS "OpenSSL lib: ${OPENSSL_LIBRARIES}")
+
+#     include_directories(${OPENSSL_INCLUDE_DIR})
+
+#     list(APPEND SRC_OPENSSL bufferevent_openssl.c)
+#     list(APPEND HDR_PUBLIC include/event2/bufferevent_ssl.h)
+#     list(APPEND LIB_APPS ${OPENSSL_LIBRARIES})
+# endif()

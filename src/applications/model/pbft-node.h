@@ -8,6 +8,8 @@
 #include "ns3/traced-callback.h"
 #include "ns3/address.h"
 #include "ns3/boolean.h"
+#include "ns3/block.h"
+#include "ns3/message.h"
 #include <map>
 
 namespace ns3 {
@@ -16,84 +18,51 @@ class Address;
 class Socket;
 class Packet;
 
-class PbftNode : public Application 
-{
-  public:
-    static TypeId GetTypeId (void);
+class BcNode {
+public:
+    int nodeId;                                      // 节点标识
+    Ptr<Socket> socket;                              // 监听的socket
+    std::vector<Ipv4Address> peersAddresses;         // 邻节点列表
+    std::map<Ipv4Address, Ptr<Socket>> peersSockets; // 邻节点的socket列表
+    RSA *rsaPubKey;                                  // 公钥
+    RSA *rsaPriKey;                                  // 私钥
 
-    void SetPeersAddresses (const std::vector<Ipv4Address> &peers); // 设置所有邻节点的地址
-
-    PbftNode (void);
-
-    virtual ~PbftNode (void);
-
-    int        m_id;                               // node id
-    Ptr<Socket>     m_socket;                           // 监听的socket
-    Ptr<Socket>     m_socketClient;                     // 客户端socket
-    std::map<Ipv4Address, Ptr<Socket>>      m_peersSockets;            // 邻节点的socket列表
-    std::map<Address, std::string>          m_bufferedData;            // map holding the buffered data from previous handleRead events
-    
-    Address         m_local;                            // 本节点地址
-    std::vector<Ipv4Address>  m_peersAddresses;         // 邻节点列表
-
-    int             N;                                  // 总节点数
-    // int             v;                                  // 当前视图编号
-    // int             n;                                  // 当前消息在视图中的编号
-    std::vector<int>  values;                           // 存储要更新的数值的容器
-    int             value;                              // 交易要更新的值
-    int             leader;                             // 当前leader节点的编号
-    int             is_leader;                          // 自己是否是leader
-
-    // int             round;                              // 共识轮数
-    int             block_num;                             // 当前区块号
-    EventId         blockEvent;                         // 广播区块的事件
-    struct TX {
-        int v;
-        int val;
-        int prepare_vote;
-        int commit_vote;
-    };
-    TX tx[1000];
-
-    // 继承 Application 类必须实现的虚函数
-    virtual void StartApplication (void);    
-    virtual void StopApplication (void); 
-
-    // 处理消息
-    void HandleRead (Ptr<Socket> socket);
-
-    // 将数据包中的消息解析为字符串
-    std::string getPacketContent(Ptr<Packet> packet, Address from); 
-
-    // 向所有邻节点广播消息 
-    void Send (uint8_t data[]);
-
-    // 向某个指定地址的节点发送消息
-    void Send(uint8_t data[], Address from);
-
-    // 向所有邻节点广播区块
-    void SendBlock(void);
-
-    void viewChange(void);
+    BcNode();
+    BcNode(int nodeId, std::vector<Ipv4Address> peersAddresses);
+    void SetPeersAddresses(const std::vector<Ipv4Address> &peers); // 设置所有邻节点的地址
 };
 
-enum Message
-{
-    REQUEST,           // 0       客户端请求        <REQUEST, t>    t:交易
-    PRE_PREPARE,       // 1       预准备消息        <PRE_PREPARE, v, n, b>   v:视图编号   b:区块内容   n:该预准备消息在视图中的编号
-    PREPARE,           // 2       准备消息          <PREPARE, v, n, H(b)>
-    COMMIT,            // 3       提交             <COMMIT, v, n>
-    PRE_PREPARE_RES,   // 4       预准备消息的响应   <PRE_PREPARE_RES, v, n, S>           S:State
-    PREPARE_RES,       // 5       准备消息响应
-    COMMIT_RES,        // 6       提交响应
-    REPLY,             // 7       对客户端的回复       
-    VIEW_CHANGE        // 8       view_change消息
-};
+class Pbft : public Application {
+public:
+    BcNode node;                                              // 节点信息
+    std::vector<int> values;                                  // 存储要更新的数值的容器
+    std::map<std::string, Block> tmpBlockPool;                // 临时区块池
+    std::vector<Block> localBlockPool;                        // 持久化区块池 TODO: 模拟持久化层, 通过 Reply 阶段后写入
+    int view;                                                 // 视图编号
+    int nonce;                                                // 交易编号
+    int leader;                                               // 当前leader节点的编号
+    int blockNumber;                                          // 当前区块号
+    int nodeNums;                                             // Pbft网络总节点数目
+    std::map<std::string, std::vector<int>> prepareVoteCount; // 存储prepare投票信息(至少需要收到并确认2f个), 根据摘要索引
+    std::map<std::string, std::vector<int>> commitVoteCount;  // 存储commit投票信息(至少需要收到并确认2f+1个), 根据摘要索引
+    std::map<std::string, bool> isCommit;                     // 该区块是否已进行过Commit广播(避免重复广播)
+    std::map<std::string, bool> isReply;                      // 该区块是否已完成过(避免重复广播)
 
-enum State
-{
-    SUCCESS,            // 0      成功
-    FAILED,             // 1      失败
+    Pbft(void);
+    virtual ~Pbft(void);
+    static TypeId GetTypeId(void);
+    virtual void StartApplication(void);                            // 继承 Application 类必须实现的虚函数
+    virtual void StopApplication(void);                             // 继承 Application 类必须实现的虚函数
+    void HandleRead(Ptr<Socket> socket);                            // 处理消息, 根据不同消息调用处理函数
+    void HandleRequest(void);                                       // 处理 Request
+    void HandlePrePrepare(std::string message);                     // 处理 PrePrePare
+    void HandlePrepare(std::string message);                        // 处理 Prepare
+    void HandleCommit(std::string message);                         // 处理 Commit
+    std::string getPacketContent(Ptr<Packet> packet, Address from); // 将数据包中的消息解析为字符串
+    void Broadcast(std::string msgType, std::string message);       // 向所有邻节点广播消息
+    void Send(uint8_t data[], Address from);                        // 向某个指定地址的节点发送消息
+    void SendBlock(void);                                           // 向所有邻节点广播区块
+    void viewChange(void);                                          // 视图切换
 };
-}
+} // namespace ns3
 #endif

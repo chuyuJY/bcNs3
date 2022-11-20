@@ -1,5 +1,8 @@
 set(target_prefix scratch_)
 
+# 引入openssl
+set(OPENSSL_LIBRARIES "-lssl -lcrypto")
+
 function(create_scratch source_files)
   # Return early if no sources in the subdirectory
   list(LENGTH source_files number_sources)
@@ -53,7 +56,7 @@ function(create_scratch source_files)
   else()
     target_link_libraries(
       ${target_prefix}${scratch_name} "${ns3-libs}" "${ns3-contrib-libs}"
-      "${ns3-external-libs}"
+      "${ns3-external-libs}" ${OPENSSL_LIBRARIES}
     )
   endif()
   set_runtime_outputdirectory(

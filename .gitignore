@@ -1,3 +1,4 @@
+# 忽略如下文件
 .vscode/
 bindings/
 build-support/
@@ -18,7 +19,7 @@ VERSION
 ns3
 testpy.supp
 
-
+# 不忽略如下文件
 !src/applications/helper/network-helper.cc
 !src/applications/helper/network-helper.h
 !src/applications/model/pbft-node.cc
