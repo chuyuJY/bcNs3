@@ -46,9 +46,12 @@ BcNode::BcNode(int nodeId, std::vector<Ipv4Address> peersAddresses) {
     this->nodeId         = nodeId;
     this->peersAddresses = peersAddresses;
     // 分配密钥
-    this->rsaPubKey = RSA_new();
-    this->rsaPriKey = RSA_new();
-    getRSAKeyPair(this->nodeId, this->rsaPubKey, this->rsaPriKey);
+    if (checkRSAKeyPair(this->nodeId)) {
+        this->rsaPubKey = getPubKey(this->nodeId);
+        this->rsaPriKey = getPriKey(this->nodeId);
+    } else {
+        std::cout << "node" << this->nodeId << " 获取密钥失败..." << std::endl;
+    }
 }
 
 // 构造PbftNode
@@ -150,24 +153,10 @@ void Pbft::HandleRead(Ptr<Socket> socket) {
 }
 
 void Pbft::HandleRequest(void) {
-    // RSA *pri = RSA_new();
-    // getPriKey(0, pri);
-    std::string str = "this is test";
-    int length      = RSA_size(this->node.rsaPriKey);
-    std::cout << "私钥长度为: " << length << std::endl;
-    // getPriKey(this->node.nodeId, this->node.rsaPriKey);
-    // std::string privateFile = KeysPath + "/node" + std::to_string(0) + "/private.pem";
-    // BIO *pri                = BIO_new_file(privateFile.c_str(), "r");
-    // key                     = PEM_read_bio_RSAPrivateKey(pri, &key, NULL, NULL);
-    // BIO_free(pri);
-    std::string s = sign(str, this->node.rsaPriKey);
-    std::cout << "签名为: " << s << std::endl;
-
     NS_LOG_INFO("Leader: node" << GetNode()->GetId() << " 收到Request 当前时间: " << Simulator::Now().GetSeconds() << "s");
     // Note: 目前由主节点直接随机生成交易, Request只作为触发
     /* TODO:
         1. 增加消息池;
-        2. 增加 hash及签名机制;
     */
     //  生成区块
     Block block;
@@ -185,8 +174,7 @@ void Pbft::HandleRequest(void) {
     NS_LOG_INFO("Leader: node" << GetNode()->GetId() << " 已将区块存入临时区块池... 当前时间: " << Simulator::Now().GetSeconds() << "s");
     this->tmpBlockPool[block.header.headerHash] = block;
     std::string digest                          = block.header.headerHash;
-    std::string test                            = "this is a test...";
-    std::string signature                       = sign(test, this->node.rsaPriKey);
+    std::string signature                       = generateRSASign(digest, this->node.rsaPriKey);
     if (signature.size() == 0) {
         NS_LOG_INFO("node" << GetNode()->GetId() << " 签名失败... ");
     }
@@ -215,24 +203,23 @@ void Pbft::HandlePrePrepare(std::string message) {
     auto prePrepare = jMessage.get<PrePrepare>();
     // TEST:
     // std::cout << prePrepare.block.header.blockNumber << std::endl;
-    RSA *leaderPubKey = RSA_new();
-    getPubKey(this->leader, leaderPubKey);
+    RSA *leaderPubKey = getPubKey(this->leader);
     if (this->view != prePrepare.ViewId || this->nonce + 1 != prePrepare.Nonce) {
         NS_LOG_INFO("PrePrepare: 消息序号或视图序号验证失败...");
         return;
     } else if (prePrepare.Digest != prePrepare.block.header.hashBlockHeader()) {
         NS_LOG_INFO("PrePrepare: 摘要验证失败...");
         return;
-    } else if (!verifySign(prePrepare.Digest, leaderPubKey, prePrepare.Signature)) {
+    } else if (!verifyRSASign(prePrepare.Digest, leaderPubKey, prePrepare.Signature)) {
         NS_LOG_INFO("PrePrepare: 签名验证失败...");
         return;
     }
-    NS_LOG_INFO("区块" << prePrepare.block.header.blockNumber << "已经过验证 node" << GetNode()->GetId()
-                       << " 将区块存入临时区块池... 当前时间: " << Simulator::Now().GetSeconds() << "s");
+    NS_LOG_INFO("node" << GetNode()->GetId() << "已验证通过区块" << prePrepare.block.header.blockNumber
+                       << " -> 将区块存入临时区块池... 当前时间: " << Simulator::Now().GetSeconds() << "s");
     this->tmpBlockPool[prePrepare.block.header.headerHash] = prePrepare.block;
     this->nonce                                            = prePrepare.Nonce;
     // 构造prepare消息
-    std::string signature = sign(prePrepare.Digest, this->node.rsaPriKey);
+    std::string signature = generateRSASign(prePrepare.Digest, this->node.rsaPriKey);
     Prepare prepare       = {
               prePrepare.ViewId,
               prePrepare.Nonce,
@@ -258,15 +245,14 @@ void Pbft::HandlePrepare(std::string message) {
     Prepare prepare = jMessage.get<Prepare>();
     // TEST:
     // std::cout << prepare.NodeId << std::endl;
-    RSA *nodePubKey = RSA_new();
-    getPubKey(prepare.NodeId, nodePubKey);
+    RSA *nodePubKey = getPubKey(prepare.NodeId);
     if (this->view != prepare.ViewId || this->nonce != prepare.Nonce) {
         NS_LOG_INFO("Prepare: 消息序号或视图序号验证失败...");
         return;
     } else if (this->tmpBlockPool.count(prepare.Digest) == 0) { // 临时区块池无此区块
         NS_LOG_INFO("Prepare: 摘要验证失败...");
         return;
-    } else if (!verifySign(prepare.Digest, nodePubKey, prepare.Signature)) {
+    } else if (!verifyRSASign(prepare.Digest, nodePubKey, prepare.Signature)) {
         NS_LOG_INFO("Prepare: 签名验证失败...");
         return;
     }
@@ -276,7 +262,7 @@ void Pbft::HandlePrepare(std::string message) {
     int minVotes = this->nodeNums;
     minVotes     = this->node.nodeId == leader ? this->nodeNums / 3 * 2 : (this->nodeNums / 3 * 2) - 1;
     if (count >= minVotes && !isCommit[prepare.Digest]) {
-        std::string signature = sign(prepare.Digest, this->node.rsaPriKey);
+        std::string signature = generateRSASign(prepare.Digest, this->node.rsaPriKey);
         Commit commit         = {
                     prepare.ViewId,
                     prepare.Nonce,
@@ -302,15 +288,14 @@ void Pbft::HandleCommit(std::string message) {
     Commit commit = jMessage.get<Commit>();
     // Test
     // std::cout << commit.NodeId << std::endl;
-    RSA *nodePubKey = RSA_new();
-    getPubKey(commit.NodeId, nodePubKey);
+    RSA *nodePubKey = getPubKey(commit.NodeId);
     if (this->view != commit.ViewId || this->nonce != commit.Nonce) {
         NS_LOG_INFO("Commit: 消息序号或视图序号验证失败...");
         return;
     } else if (this->prepareVoteCount.count(commit.Digest) == 0) { // prepare投票池无此消息
         NS_LOG_INFO("Commit: 摘要验证失败...");
         return;
-    } else if (!verifySign(commit.Digest, nodePubKey, commit.Signature)) {
+    } else if (!verifyRSASign(commit.Digest, nodePubKey, commit.Signature)) {
         NS_LOG_INFO("Commit: 签名验证失败...");
         return;
     }

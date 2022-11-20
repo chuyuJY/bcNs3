@@ -13,20 +13,25 @@
 const std::string KeysPath = "keys";
 
 namespace ns3 {
+int Hex2Int(char c);
+
+void Hex2Bin(const unsigned char *hex, int sz, unsigned char *out);
+
+char *Bin2Hex(unsigned char *src, int size);
 
 std::string sha256(const std::string &srcStr);
 
-void getRSAKeyPair(int nodeId, RSA *pubKey, RSA *priKey);
+bool checkRSAKeyPair(int nodeId); // 检查该节点是否已有RSA密钥, 若无, 自动创建
 
 void generateRSAKey(std::string publicFile, std::string privateFile); // 生成RSA到指定文件目录
 
-void getPubKey(int nodeId, RSA *pubKey);
+std::string generateRSASign(const std::string &digest, RSA *priKey);
 
-void getPriKey(int nodeId, RSA *priKey);
+bool verifyRSASign(std::string &digest, RSA *pubKey, std::string &signature);
 
-std::string sign(std::string &digest, RSA *priKey);
+RSA *getPubKey(int nodeId);
 
-bool verifySign(std::string &digest, RSA *pubKey, std::string &signature);
+RSA *getPriKey(int nodeId);
 
 } // namespace ns3
 
