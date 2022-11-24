@@ -1,0 +1,923 @@
+%!PS-Adobe-2.0 EPSF-2.0
+%%Title: source/figures/rbf-impl.dia
+%%Creator: Dia v0.97.3
+%%CreationDate: Sun Oct 30 19:58:39 2022
+%%For: ysb
+%%Orientation: Portrait
+%%Magnification: 1.0000
+%%BoundingBox: 0 0 1853 1050
+%%BeginSetup
+%%EndSetup
+%%EndComments
+%%BeginProlog
+[ /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /space /exclam /quotedbl /numbersign /dollar /percent /ampersand /quoteright
+/parenleft /parenright /asterisk /plus /comma /hyphen /period /slash /zero /one
+/two /three /four /five /six /seven /eight /nine /colon /semicolon
+/less /equal /greater /question /at /A /B /C /D /E
+/F /G /H /I /J /K /L /M /N /O
+/P /Q /R /S /T /U /V /W /X /Y
+/Z /bracketleft /backslash /bracketright /asciicircum /underscore /quoteleft /a /b /c
+/d /e /f /g /h /i /j /k /l /m
+/n /o /p /q /r /s /t /u /v /w
+/x /y /z /braceleft /bar /braceright /asciitilde /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/space /exclamdown /cent /sterling /currency /yen /brokenbar /section /dieresis /copyright
+/ordfeminine /guillemotleft /logicalnot /hyphen /registered /macron /degree /plusminus /twosuperior /threesuperior
+/acute /mu /paragraph /periodcentered /cedilla /onesuperior /ordmasculine /guillemotright /onequarter /onehalf
+/threequarters /questiondown /Agrave /Aacute /Acircumflex /Atilde /Adieresis /Aring /AE /Ccedilla
+/Egrave /Eacute /Ecircumflex /Edieresis /Igrave /Iacute /Icircumflex /Idieresis /Eth /Ntilde
+/Ograve /Oacute /Ocircumflex /Otilde /Odieresis /multiply /Oslash /Ugrave /Uacute /Ucircumflex
+/Udieresis /Yacute /Thorn /germandbls /agrave /aacute /acircumflex /atilde /adieresis /aring
+/ae /ccedilla /egrave /eacute /ecircumflex /edieresis /igrave /iacute /icircumflex /idieresis
+/eth /ntilde /ograve /oacute /ocircumflex /otilde /odieresis /divide /oslash /ugrave
+/uacute /ucircumflex /udieresis /yacute /thorn /ydieresis] /isolatin1encoding exch def
+/cp {closepath} bind def
+/c {curveto} bind def
+/f {fill} bind def
+/a {arc} bind def
+/ef {eofill} bind def
+/ex {exch} bind def
+/gr {grestore} bind def
+/gs {gsave} bind def
+/sa {save} bind def
+/rs {restore} bind def
+/l {lineto} bind def
+/m {moveto} bind def
+/rm {rmoveto} bind def
+/n {newpath} bind def
+/s {stroke} bind def
+/sh {show} bind def
+/slc {setlinecap} bind def
+/slj {setlinejoin} bind def
+/slw {setlinewidth} bind def
+/srgb {setrgbcolor} bind def
+/rot {rotate} bind def
+/sc {scale} bind def
+/sd {setdash} bind def
+/ff {findfont} bind def
+/sf {setfont} bind def
+/scf {scalefont} bind def
+/sw {stringwidth pop} bind def
+/tr {translate} bind def
+
+/ellipsedict 8 dict def
+ellipsedict /mtrx matrix put
+/ellipse
+{ ellipsedict begin
+   /endangle exch def
+   /startangle exch def
+   /yrad exch def
+   /xrad exch def
+   /y exch def
+   /x exch def   /savematrix mtrx currentmatrix def
+   x y tr xrad yrad sc
+   0 0 1 startangle endangle arc
+   savematrix setmatrix
+   end
+} def
+
+/mergeprocs {
+dup length
+3 -1 roll
+dup
+length
+dup
+5 1 roll
+3 -1 roll
+add
+array cvx
+dup
+3 -1 roll
+0 exch
+putinterval
+dup
+4 2 roll
+putinterval
+} bind def
+/Times-Roman-latin1
+    /Times-Roman findfont
+    dup length dict begin
+	{1 index /FID ne {def} {pop pop} ifelse} forall
+	/Encoding isolatin1encoding def
+    currentdict end
+definefont pop
+/Times-Italic-latin1
+    /Times-Italic findfont
+    dup length dict begin
+	{1 index /FID ne {def} {pop pop} ifelse} forall
+	/Encoding isolatin1encoding def
+    currentdict end
+definefont pop
+/Times-Bold-latin1
+    /Times-Bold findfont
+    dup length dict begin
+	{1 index /FID ne {def} {pop pop} ifelse} forall
+	/Encoding isolatin1encoding def
+    currentdict end
+definefont pop
+/Times-BoldItalic-latin1
+    /Times-BoldItalic findfont
+    dup length dict begin
+	{1 index /FID ne {def} {pop pop} ifelse} forall
+	/Encoding isolatin1encoding def
+    currentdict end
+definefont pop
+/AvantGarde-Gothic-latin1
+    /AvantGarde-Gothic findfont
+    dup length dict begin
+	{1 index /FID ne {def} {pop pop} ifelse} forall
+	/Encoding isolatin1encoding def
+    currentdict end
+definefont pop
+/AvantGarde-BookOblique-latin1
+    /AvantGarde-BookOblique findfont
+    dup length dict begin
+	{1 index /FID ne {def} {pop pop} ifelse} forall
+	/Encoding isolatin1encoding def
+    currentdict end
+definefont pop
+/AvantGarde-Demi-latin1
+    /AvantGarde-Demi findfont
+    dup length dict begin
+	{1 index /FID ne {def} {pop pop} ifelse} forall
+	/Encoding isolatin1encoding def
+    currentdict end
+definefont pop
+/AvantGarde-DemiOblique-latin1
+    /AvantGarde-DemiOblique findfont
+    dup length dict begin
+	{1 index /FID ne {def} {pop pop} ifelse} forall
+	/Encoding isolatin1encoding def
+    currentdict end
+definefont pop
+/Bookman-Light-latin1
+    /Bookman-Light findfont
+    dup length dict begin
+	{1 index /FID ne {def} {pop pop} ifelse} forall
+	/Encoding isolatin1encoding def
+    currentdict end
+definefont pop
+/Bookman-LightItalic-latin1
+    /Bookman-LightItalic findfont
+    dup length dict begin
+	{1 index /FID ne {def} {pop pop} ifelse} forall
+	/Encoding isolatin1encoding def
+    currentdict end
+definefont pop
+/Bookman-Demi-latin1
+    /Bookman-Demi findfont
+    dup length dict begin
+	{1 index /FID ne {def} {pop pop} ifelse} forall
+	/Encoding isolatin1encoding def
+    currentdict end
+definefont pop
+/Bookman-DemiItalic-latin1
+    /Bookman-DemiItalic findfont
+    dup length dict begin
+	{1 index /FID ne {def} {pop pop} ifelse} forall
+	/Encoding isolatin1encoding def
+    currentdict end
+definefont pop
+/Courier-latin1
+    /Courier findfont
+    dup length dict begin
+	{1 index /FID ne {def} {pop pop} ifelse} forall
+	/Encoding isolatin1encoding def
+    currentdict end
+definefont pop
+/Courier-Oblique-latin1
+    /Courier-Oblique findfont
+    dup length dict begin
+	{1 index /FID ne {def} {pop pop} ifelse} forall
+	/Encoding isolatin1encoding def
+    currentdict end
+definefont pop
+/Courier-Bold-latin1
+    /Courier-Bold findfont
+    dup length dict begin
+	{1 index /FID ne {def} {pop pop} ifelse} forall
+	/Encoding isolatin1encoding def
+    currentdict end
+definefont pop
+/Courier-BoldOblique-latin1
+    /Courier-BoldOblique findfont
+    dup length dict begin
+	{1 index /FID ne {def} {pop pop} ifelse} forall
+	/Encoding isolatin1encoding def
+    currentdict end
+definefont pop
+/Helvetica-latin1
+    /Helvetica findfont
+    dup length dict begin
+	{1 index /FID ne {def} {pop pop} ifelse} forall
+	/Encoding isolatin1encoding def
+    currentdict end
+definefont pop
+/Helvetica-Oblique-latin1
+    /Helvetica-Oblique findfont
+    dup length dict begin
+	{1 index /FID ne {def} {pop pop} ifelse} forall
+	/Encoding isolatin1encoding def
+    currentdict end
+definefont pop
+/Helvetica-Bold-latin1
+    /Helvetica-Bold findfont
+    dup length dict begin
+	{1 index /FID ne {def} {pop pop} ifelse} forall
+	/Encoding isolatin1encoding def
+    currentdict end
+definefont pop
+/Helvetica-BoldOblique-latin1
+    /Helvetica-BoldOblique findfont
+    dup length dict begin
+	{1 index /FID ne {def} {pop pop} ifelse} forall
+	/Encoding isolatin1encoding def
+    currentdict end
+definefont pop
+/Helvetica-Narrow-latin1
+    /Helvetica-Narrow findfont
+    dup length dict begin
+	{1 index /FID ne {def} {pop pop} ifelse} forall
+	/Encoding isolatin1encoding def
+    currentdict end
+definefont pop
+/Helvetica-Narrow-Oblique-latin1
+    /Helvetica-Narrow-Oblique findfont
+    dup length dict begin
+	{1 index /FID ne {def} {pop pop} ifelse} forall
+	/Encoding isolatin1encoding def
+    currentdict end
+definefont pop
+/Helvetica-Narrow-Bold-latin1
+    /Helvetica-Narrow-Bold findfont
+    dup length dict begin
+	{1 index /FID ne {def} {pop pop} ifelse} forall
+	/Encoding isolatin1encoding def
+    currentdict end
+definefont pop
+/Helvetica-Narrow-BoldOblique-latin1
+    /Helvetica-Narrow-BoldOblique findfont
+    dup length dict begin
+	{1 index /FID ne {def} {pop pop} ifelse} forall
+	/Encoding isolatin1encoding def
+    currentdict end
+definefont pop
+/NewCenturySchlbk-Roman-latin1
+    /NewCenturySchlbk-Roman findfont
+    dup length dict begin
+	{1 index /FID ne {def} {pop pop} ifelse} forall
+	/Encoding isolatin1encoding def
+    currentdict end
+definefont pop
+/NewCenturySchlbk-Italic-latin1
+    /NewCenturySchlbk-Italic findfont
+    dup length dict begin
+	{1 index /FID ne {def} {pop pop} ifelse} forall
+	/Encoding isolatin1encoding def
+    currentdict end
+definefont pop
+/NewCenturySchlbk-Bold-latin1
+    /NewCenturySchlbk-Bold findfont
+    dup length dict begin
+	{1 index /FID ne {def} {pop pop} ifelse} forall
+	/Encoding isolatin1encoding def
+    currentdict end
+definefont pop
+/NewCenturySchlbk-BoldItalic-latin1
+    /NewCenturySchlbk-BoldItalic findfont
+    dup length dict begin
+	{1 index /FID ne {def} {pop pop} ifelse} forall
+	/Encoding isolatin1encoding def
+    currentdict end
+definefont pop
+/Palatino-Roman-latin1
+    /Palatino-Roman findfont
+    dup length dict begin
+	{1 index /FID ne {def} {pop pop} ifelse} forall
+	/Encoding isolatin1encoding def
+    currentdict end
+definefont pop
+/Palatino-Italic-latin1
+    /Palatino-Italic findfont
+    dup length dict begin
+	{1 index /FID ne {def} {pop pop} ifelse} forall
+	/Encoding isolatin1encoding def
+    currentdict end
+definefont pop
+/Palatino-Bold-latin1
+    /Palatino-Bold findfont
+    dup length dict begin
+	{1 index /FID ne {def} {pop pop} ifelse} forall
+	/Encoding isolatin1encoding def
+    currentdict end
+definefont pop
+/Palatino-BoldItalic-latin1
+    /Palatino-BoldItalic findfont
+    dup length dict begin
+	{1 index /FID ne {def} {pop pop} ifelse} forall
+	/Encoding isolatin1encoding def
+    currentdict end
+definefont pop
+/Symbol-latin1
+    /Symbol findfont
+definefont pop
+/ZapfChancery-MediumItalic-latin1
+    /ZapfChancery-MediumItalic findfont
+    dup length dict begin
+	{1 index /FID ne {def} {pop pop} ifelse} forall
+	/Encoding isolatin1encoding def
+    currentdict end
+definefont pop
+/ZapfDingbats-latin1
+    /ZapfDingbats findfont
+    dup length dict begin
+	{1 index /FID ne {def} {pop pop} ifelse} forall
+	/Encoding isolatin1encoding def
+    currentdict end
+definefont pop
+28.346000 -28.346000 scale
+2.935000 -39.059500 translate
+%%EndProlog
+
+
+0.100000 slw
+[] 0 sd
+1.000000 1.000000 1.000000 srgb
+n 22.900000 24.350000 m 38.030000 24.350000 l 38.030000 25.750000 l 22.900000 25.750000 l ef
+0.000000 0.000000 0.000000 srgb
+n 22.900000 24.350000 m 38.030000 24.350000 l 38.030000 25.750000 l 22.900000 25.750000 l cp s
+/Helvetica-Bold-latin1 ff 0.000000 scf sf
+/Helvetica-Bold-latin1 ff 0.700000 scf sf
+(RealisticBeamformingAlgorithm) dup sw 2 div 30.465000 ex sub 25.250000 m
+ gs 1 -1 sc sh gr
+1.000000 1.000000 1.000000 srgb
+n 22.900000 25.750000 m 38.030000 25.750000 l 38.030000 29.150000 l 22.900000 29.150000 l ef
+0.000000 0.000000 0.000000 srgb
+n 22.900000 25.750000 m 38.030000 25.750000 l 38.030000 29.150000 l 22.900000 29.150000 l cp s
+/Courier-latin1 ff 0.700000 scf sf
+/Courier-latin1 ff 0.560000 scf sf
+(-CalculateTheEstimatedLongTermMetric\(\)) 23.050000 26.290000 m
+ gs 1 -1 sc sh gr
+(-GetEstimatedLongTermComponent\(\)) 23.050000 27.090000 m
+ gs 1 -1 sc sh gr
+(+NotifySrsReport\(\)) 23.050000 27.890000 m
+ gs 1 -1 sc sh gr
+(+Install\(\)) 23.050000 28.690000 m
+ gs 1 -1 sc sh gr
+0.100000 slw
+[] 0 sd
+1.000000 1.000000 1.000000 srgb
+n 21.815000 10.000000 m 33.682500 10.000000 l 33.682500 11.400000 l 21.815000 11.400000 l ef
+0.000000 0.000000 0.000000 srgb
+n 21.815000 10.000000 m 33.682500 10.000000 l 33.682500 11.400000 l 21.815000 11.400000 l cp s
+/Helvetica-Bold-latin1 ff 0.560000 scf sf
+/Helvetica-Bold-latin1 ff 0.700000 scf sf
+(RealisticBeamformingHelper) dup sw 2 div 27.748750 ex sub 10.900000 m
+ gs 1 -1 sc sh gr
+1.000000 1.000000 1.000000 srgb
+n 21.815000 11.400000 m 33.682500 11.400000 l 33.682500 11.800000 l 21.815000 11.800000 l ef
+0.000000 0.000000 0.000000 srgb
+n 21.815000 11.400000 m 33.682500 11.400000 l 33.682500 11.800000 l 21.815000 11.800000 l cp s
+0.100000 slw
+[] 0 sd
+1.000000 1.000000 1.000000 srgb
+n 12.815000 2.100000 m 23.225000 2.100000 l 23.225000 3.500000 l 12.815000 3.500000 l ef
+0.000000 0.000000 0.000000 srgb
+n 12.815000 2.100000 m 23.225000 2.100000 l 23.225000 3.500000 l 12.815000 3.500000 l cp s
+/Helvetica-Bold-latin1 ff 0.700000 scf sf
+(BeamformingHelperBase) dup sw 2 div 18.020000 ex sub 3.000000 m
+ gs 1 -1 sc sh gr
+1.000000 1.000000 1.000000 srgb
+n 12.815000 3.500000 m 23.225000 3.500000 l 23.225000 6.100000 l 12.815000 6.100000 l ef
+0.000000 0.000000 0.000000 srgb
+n 12.815000 3.500000 m 23.225000 3.500000 l 23.225000 6.100000 l 12.815000 6.100000 l cp s
+/Courier-latin1 ff 0.700000 scf sf
+/Courier-latin1 ff 0.560000 scf sf
+(+RunTask\(\)) 12.965000 4.040000 m
+ gs 1 -1 sc sh gr
+(+AddBeamformingTask\(\)) 12.965000 4.840000 m
+ gs 1 -1 sc sh gr
+(+SetBeamformingMethod\(\)) 12.965000 5.640000 m
+ gs 1 -1 sc sh gr
+0.100000 slw
+[] 0 sd
+1.000000 1.000000 1.000000 srgb
+n 2.515000 10.150000 m 13.005000 10.150000 l 13.005000 11.550000 l 2.515000 11.550000 l ef
+0.000000 0.000000 0.000000 srgb
+n 2.515000 10.150000 m 13.005000 10.150000 l 13.005000 11.550000 l 2.515000 11.550000 l cp s
+/Helvetica-Bold-latin1 ff 0.560000 scf sf
+/Helvetica-Bold-latin1 ff 0.700000 scf sf
+(IdealBeamformingHelper) dup sw 2 div 7.760000 ex sub 11.050000 m
+ gs 1 -1 sc sh gr
+1.000000 1.000000 1.000000 srgb
+n 2.515000 11.550000 m 13.005000 11.550000 l 13.005000 12.550000 l 2.515000 12.550000 l ef
+0.000000 0.000000 0.000000 srgb
+n 2.515000 11.550000 m 13.005000 11.550000 l 13.005000 12.550000 l 2.515000 12.550000 l cp s
+/Courier-latin1 ff 0.700000 scf sf
+/Courier-latin1 ff 0.560000 scf sf
+(+SetPeriodicity\(\)) 2.665000 12.090000 m
+ gs 1 -1 sc sh gr
+/Helvetica-latin1 ff 0.560000 scf sf
+(GetBeamformingVectors) 24.550000 14.250000 m
+ gs 1 -1 sc sh gr
+0.100000 slw
+[] 0 sd
+1.000000 1.000000 1.000000 srgb
+n 13.350000 16.750000 m 23.170000 16.750000 l 23.170000 18.150000 l 13.350000 18.150000 l ef
+0.000000 0.000000 0.000000 srgb
+n 13.350000 16.750000 m 23.170000 16.750000 l 23.170000 18.150000 l 13.350000 18.150000 l cp s
+/Helvetica-Bold-latin1 ff 0.560000 scf sf
+/Helvetica-Bold-latin1 ff 0.700000 scf sf
+(BeamformingAlgorithm) dup sw 2 div 18.260000 ex sub 17.650000 m
+ gs 1 -1 sc sh gr
+1.000000 1.000000 1.000000 srgb
+n 13.350000 18.150000 m 23.170000 18.150000 l 23.170000 19.150000 l 13.350000 19.150000 l ef
+0.000000 0.000000 0.000000 srgb
+n 13.350000 18.150000 m 23.170000 18.150000 l 23.170000 19.150000 l 13.350000 19.150000 l cp s
+/Courier-latin1 ff 0.700000 scf sf
+/Courier-latin1 ff 0.560000 scf sf
+(+GetBeamformingVectors\(\)) 13.500000 18.690000 m
+ gs 1 -1 sc sh gr
+0.100000 slw
+[] 0 sd
+0 slj
+0 slc
+n 18.020000 7.011803 m 18.020000 8.525000 l 7.760000 8.525000 l 7.760000 10.150000 l s
+0.100000 slw
+[] 0 sd
+0 slj
+1.000000 1.000000 1.000000 srgb
+n 18.420000 7.011803 m 18.020000 6.211803 l 17.620000 7.011803 l ef
+0.000000 0.000000 0.000000 srgb
+n 18.420000 7.011803 m 18.020000 6.211803 l 17.620000 7.011803 l cp s
+/Courier-latin1 ff 0.560000 scf sf
+0.100000 slw
+[] 0 sd
+0 slj
+0 slc
+n 18.681300 7.011803 m 18.681300 8.524470 l 28.525000 8.524470 l 28.525000 10.000000 l s
+0.100000 slw
+[] 0 sd
+0 slj
+1.000000 1.000000 1.000000 srgb
+n 19.081300 7.011803 m 18.681300 6.211803 l 18.281300 7.011803 l ef
+0.000000 0.000000 0.000000 srgb
+n 19.081300 7.011803 m 18.681300 6.211803 l 18.281300 7.011803 l cp s
+/Courier-latin1 ff 0.560000 scf sf
+/Helvetica-latin1 ff 0.560000 scf sf
+0.100000 slw
+[] 0 sd
+0 slj
+0 slc
+n 18.870000 20.061803 m 18.870000 22.499600 l 30.465000 22.499600 l 30.465000 24.299742 l s
+0.100000 slw
+[] 0 sd
+0 slj
+1.000000 1.000000 1.000000 srgb
+n 19.270000 20.061803 m 18.870000 19.261803 l 18.470000 20.061803 l ef
+0.000000 0.000000 0.000000 srgb
+n 19.270000 20.061803 m 18.870000 19.261803 l 18.470000 20.061803 l cp s
+/Courier-latin1 ff 0.560000 scf sf
+0.100000 slw
+[] 0 sd
+1.000000 1.000000 1.000000 srgb
+n 1.779860 24.500000 m 13.557360 24.500000 l 13.557360 25.900000 l 1.779860 25.900000 l ef
+0.000000 0.000000 0.000000 srgb
+n 1.779860 24.500000 m 13.557360 24.500000 l 13.557360 25.900000 l 1.779860 25.900000 l cp s
+/Helvetica-Bold-latin1 ff 0.560000 scf sf
+/Helvetica-Bold-latin1 ff 0.700000 scf sf
+(IdealBeamformingAlgorithm) dup sw 2 div 7.668610 ex sub 25.400000 m
+ gs 1 -1 sc sh gr
+0.100000 slw
+[] 0 sd
+0 slj
+0 slc
+n 18.870000 20.061803 m 18.870000 22.503900 l 8.413610 22.503900 l 8.413610 24.500000 l s
+0.100000 slw
+[] 0 sd
+0 slj
+1.000000 1.000000 1.000000 srgb
+n 19.270000 20.061803 m 18.870000 19.261803 l 18.470000 20.061803 l ef
+0.000000 0.000000 0.000000 srgb
+n 19.270000 20.061803 m 18.870000 19.261803 l 18.470000 20.061803 l cp s
+/Courier-latin1 ff 0.700000 scf sf
+/Courier-latin1 ff 0.560000 scf sf
+0.100000 slw
+[] 0 sd
+1.000000 1.000000 1.000000 srgb
+n -2.885000 29.450000 m 6.387500 29.450000 l 6.387500 30.850000 l -2.885000 30.850000 l ef
+0.000000 0.000000 0.000000 srgb
+n -2.885000 29.450000 m 6.387500 29.450000 l 6.387500 30.850000 l -2.885000 30.850000 l cp s
+/Helvetica-Bold-latin1 ff 0.560000 scf sf
+/Helvetica-Bold-latin1 ff 0.700000 scf sf
+(CellScanBeamforming) dup sw 2 div 1.751250 ex sub 30.350000 m
+ gs 1 -1 sc sh gr
+0.100000 slw
+[] 0 sd
+1.000000 1.000000 1.000000 srgb
+n 0.769523 32.122700 m 14.417023 32.122700 l 14.417023 33.522700 l 0.769523 33.522700 l ef
+0.000000 0.000000 0.000000 srgb
+n 0.769523 32.122700 m 14.417023 32.122700 l 14.417023 33.522700 l 0.769523 33.522700 l cp s
+/Helvetica-Bold-latin1 ff 0.700000 scf sf
+(CellScanQuasiOmniBeamforming) dup sw 2 div 7.593273 ex sub 33.022700 m
+ gs 1 -1 sc sh gr
+0.100000 slw
+[] 0 sd
+1.000000 1.000000 1.000000 srgb
+n 1.365000 36.650000 m 15.795000 36.650000 l 15.795000 38.050000 l 1.365000 38.050000 l ef
+0.000000 0.000000 0.000000 srgb
+n 1.365000 36.650000 m 15.795000 36.650000 l 15.795000 38.050000 l 1.365000 38.050000 l cp s
+/Helvetica-Bold-latin1 ff 0.700000 scf sf
+(QuasiOmniDirectPathBeamforming) dup sw 2 div 8.580000 ex sub 37.550000 m
+ gs 1 -1 sc sh gr
+0.100000 slw
+[] 0 sd
+1.000000 1.000000 1.000000 srgb
+n 18.915000 36.650000 m 33.345000 36.650000 l 33.345000 38.050000 l 18.915000 38.050000 l ef
+0.000000 0.000000 0.000000 srgb
+n 18.915000 36.650000 m 33.345000 36.650000 l 33.345000 38.050000 l 18.915000 38.050000 l cp s
+/Helvetica-Bold-latin1 ff 0.700000 scf sf
+(DirectPathQuasiOmniBeamforming) dup sw 2 div 26.130000 ex sub 37.550000 m
+ gs 1 -1 sc sh gr
+0.100000 slw
+[] 0 sd
+1.000000 1.000000 1.000000 srgb
+n 12.445000 29.500000 m 22.500000 29.500000 l 22.500000 30.900000 l 12.445000 30.900000 l ef
+0.000000 0.000000 0.000000 srgb
+n 12.445000 29.500000 m 22.500000 29.500000 l 22.500000 30.900000 l 12.445000 30.900000 l cp s
+/Helvetica-Bold-latin1 ff 0.700000 scf sf
+(DirectPathBeamforming) dup sw 2 div 17.472500 ex sub 30.400000 m
+ gs 1 -1 sc sh gr
+0.100000 slw
+[] 0 sd
+0 slj
+0 slc
+n 7.668610 26.811803 m 7.668610 28.049817 l 1.751250 28.049817 l 1.751250 29.399634 l s
+0.100000 slw
+[] 0 sd
+0 slj
+1.000000 1.000000 1.000000 srgb
+n 8.068610 26.811803 m 7.668610 26.011803 l 7.268610 26.811803 l ef
+0.000000 0.000000 0.000000 srgb
+n 8.068610 26.811803 m 7.668610 26.011803 l 7.268610 26.811803 l cp s
+/Courier-latin1 ff 0.700000 scf sf
+/Courier-latin1 ff 0.560000 scf sf
+0.100000 slw
+[] 0 sd
+0 slj
+0 slc
+n 8.413610 26.811803 m 8.413610 32.122700 l 8.422020 32.122700 l s
+0.100000 slw
+[] 0 sd
+0 slj
+1.000000 1.000000 1.000000 srgb
+n 8.813610 26.811803 m 8.413610 26.011803 l 8.013610 26.811803 l ef
+0.000000 0.000000 0.000000 srgb
+n 8.813610 26.811803 m 8.413610 26.011803 l 8.013610 26.811803 l cp s
+/Courier-latin1 ff 0.560000 scf sf
+0.100000 slw
+[] 0 sd
+0 slj
+0 slc
+n 8.413610 26.811803 m 8.413610 28.056300 l 18.125000 28.056300 l 18.125000 29.500000 l s
+0.100000 slw
+[] 0 sd
+0 slj
+1.000000 1.000000 1.000000 srgb
+n 8.813610 26.811803 m 8.413610 26.011803 l 8.013610 26.811803 l ef
+0.000000 0.000000 0.000000 srgb
+n 8.813610 26.811803 m 8.413610 26.011803 l 8.013610 26.811803 l cp s
+/Courier-latin1 ff 0.560000 scf sf
+0.100000 slw
+[] 0 sd
+0 slj
+0 slc
+n 18.125000 31.811803 m 18.125000 34.234200 l 9.493750 34.234200 l 9.493750 36.650000 l s
+0.100000 slw
+[] 0 sd
+0 slj
+1.000000 1.000000 1.000000 srgb
+n 18.525000 31.811803 m 18.125000 31.011803 l 17.725000 31.811803 l ef
+0.000000 0.000000 0.000000 srgb
+n 18.525000 31.811803 m 18.125000 31.011803 l 17.725000 31.811803 l cp s
+/Courier-latin1 ff 0.560000 scf sf
+0.100000 slw
+[] 0 sd
+0 slj
+0 slc
+n 18.125000 31.811803 m 18.125000 34.231300 l 27.043800 34.231300 l 27.043800 36.650000 l s
+0.100000 slw
+[] 0 sd
+0 slj
+1.000000 1.000000 1.000000 srgb
+n 18.525000 31.811803 m 18.125000 31.011803 l 17.725000 31.811803 l ef
+0.000000 0.000000 0.000000 srgb
+n 18.525000 31.811803 m 18.125000 31.011803 l 17.725000 31.811803 l cp s
+/Courier-latin1 ff 0.560000 scf sf
+/Helvetica-latin1 ff 0.560000 scf sf
+(GetBeamformingVectors) 0.505683 17.303100 m
+ gs 1 -1 sc sh gr
+0.100000 slw
+[] 0 sd
+1.000000 1.000000 1.000000 srgb
+n 48.033800 11.500000 m 54.848800 11.500000 l 54.848800 12.900000 l 48.033800 12.900000 l ef
+0.000000 0.000000 0.000000 srgb
+n 48.033800 11.500000 m 54.848800 11.500000 l 54.848800 12.900000 l 48.033800 12.900000 l cp s
+/Helvetica-Bold-latin1 ff 0.560000 scf sf
+/Helvetica-Bold-latin1 ff 0.700000 scf sf
+(NrSpectrumPhy) dup sw 2 div 51.441300 ex sub 12.400000 m
+ gs 1 -1 sc sh gr
+0.100000 slw
+[0.400000] 0 sd
+0 slj
+0 slc
+n 47.983378 12.200000 m 43.231921 12.200000 l 43.231921 26.750000 l 38.415726 26.750000 l s
+0.100000 slw
+[] 0 sd
+0 slj
+0 slc
+n 39.048095 26.500000 m 38.248095 26.750000 l 39.048095 27.000000 l s
+/Courier-latin1 ff 0.700000 scf sf
+/Courier-latin1 ff 0.560000 scf sf
+/Helvetica-latin1 ff 0.560000 scf sf
+(NotifySrsReport) 43.430000 14.245000 m
+ gs 1 -1 sc sh gr
+0.100000 slw
+[] 0 sd
+1.000000 1.000000 1.000000 srgb
+n 49.304100 8.147910 m 53.859100 8.147910 l 53.859100 9.547910 l 49.304100 9.547910 l ef
+0.000000 0.000000 0.000000 srgb
+n 49.304100 8.147910 m 53.859100 8.147910 l 53.859100 9.547910 l 49.304100 9.547910 l cp s
+/Helvetica-Bold-latin1 ff 0.560000 scf sf
+/Helvetica-Bold-latin1 ff 0.700000 scf sf
+(NrGnbPhy) dup sw 2 div 51.581600 ex sub 9.047910 m
+ gs 1 -1 sc sh gr
+0.100000 slw
+[] 0 sd
+0 slj
+0 slc
+n 51.826600 9.547910 m 51.826600 10.300000 l 51.828800 10.300000 l 51.828800 11.500000 l s
+/Courier-latin1 ff 0.700000 scf sf
+/Courier-latin1 ff 0.560000 scf sf
+(1) 52.026600 9.987910 m
+ gs 1 -1 sc sh gr
+(1) 52.028800 11.140000 m
+ gs 1 -1 sc sh gr
+0.100000 slw
+[] 0 sd
+0 slj
+0 slc
+n 27.748750 13.058579 m 27.748750 18.399850 l 30.465000 18.399850 l 30.465000 24.299701 l s
+0.100000 slw
+[] 0 sd
+0 slj
+0 slc
+1.000000 1.000000 1.000000 srgb
+n 27.748750 11.800000 m 27.988750 12.500000 l 27.748750 13.200000 l 27.508750 12.500000 l ef
+0.000000 0.000000 0.000000 srgb
+n 27.748750 11.800000 m 27.988750 12.500000 l 27.748750 13.200000 l 27.508750 12.500000 l cp s
+/Courier-latin1 ff 0.560000 scf sf
+0.100000 slw
+[] 0 sd
+0 slj
+0 slc
+n 7.760000 13.808579 m 7.760000 18.875000 l 7.668610 18.875000 l 7.668610 24.500000 l s
+0.100000 slw
+[] 0 sd
+0 slj
+0 slc
+1.000000 1.000000 1.000000 srgb
+n 7.760000 12.550000 m 8.000000 13.250000 l 7.760000 13.950000 l 7.520000 13.250000 l ef
+0.000000 0.000000 0.000000 srgb
+n 7.760000 12.550000 m 8.000000 13.250000 l 7.760000 13.950000 l 7.520000 13.250000 l cp s
+/Courier-latin1 ff 0.560000 scf sf
+0.100000 slw
+[] 0 sd
+1.000000 1.000000 1.000000 srgb
+n 45.065000 17.200000 m 57.117500 17.200000 l 57.117500 18.600000 l 45.065000 18.600000 l ef
+0.000000 0.000000 0.000000 srgb
+n 45.065000 17.200000 m 57.117500 17.200000 l 57.117500 18.600000 l 45.065000 18.600000 l cp s
+/Helvetica-Bold-latin1 ff 0.560000 scf sf
+/Helvetica-Bold-latin1 ff 0.700000 scf sf
+(MultiModelSpectrumChannel) dup sw 2 div 51.091250 ex sub 18.100000 m
+ gs 1 -1 sc sh gr
+0.100000 slw
+[] 0 sd
+1.000000 1.000000 1.000000 srgb
+n 44.270500 23.350000 m 57.643000 23.350000 l 57.643000 24.750000 l 44.270500 24.750000 l ef
+0.000000 0.000000 0.000000 srgb
+n 44.270500 23.350000 m 57.643000 23.350000 l 57.643000 24.750000 l 44.270500 24.750000 l cp s
+/Helvetica-Bold-latin1 ff 0.700000 scf sf
+(SpectrumPropagationLossModel) dup sw 2 div 50.956750 ex sub 24.250000 m
+ gs 1 -1 sc sh gr
+0.100000 slw
+[] 0 sd
+1.000000 1.000000 1.000000 srgb
+n 52.850200 20.781100 m 62.362700 20.781100 l 62.362700 22.181100 l 52.850200 22.181100 l ef
+0.000000 0.000000 0.000000 srgb
+n 52.850200 20.781100 m 62.362700 20.781100 l 62.362700 22.181100 l 52.850200 22.181100 l cp s
+/Helvetica-Bold-latin1 ff 0.700000 scf sf
+(PropagationLossModel) dup sw 2 div 57.606450 ex sub 21.681100 m
+ gs 1 -1 sc sh gr
+0.100000 slw
+[] 0 sd
+0 slj
+0 slc
+n 51.133614 18.647729 m 51.268313 21.025200 l 51.833000 21.025200 l 51.833000 23.350000 l s
+/Courier-latin1 ff 0.700000 scf sf
+/Courier-latin1 ff 0.560000 scf sf
+(1..n) 52.033000 22.990000 m
+ gs 1 -1 sc sh gr
+0.100000 slw
+[] 0 sd
+0 slj
+0 slc
+n 51.831300 18.399300 m 51.831300 20.000000 l 58.240200 20.000000 l 58.240200 20.781100 l s
+/Courier-latin1 ff 0.560000 scf sf
+(1..n) 58.440200 20.421100 m
+ gs 1 -1 sc sh gr
+0.100000 slw
+[] 0 sd
+0 slj
+0 slc
+n 51.638233 12.948535 m 51.717545 13.250000 l 51.210587 13.250000 l 51.110494 17.150165 l s
+/Courier-latin1 ff 0.560000 scf sf
+(1..n) 51.838233 13.388535 m
+ gs 1 -1 sc sh gr
+(1) 51.310494 16.790165 m
+ gs 1 -1 sc sh gr
+0.100000 slw
+[] 0 sd
+1.000000 1.000000 1.000000 srgb
+n 42.067700 27.350000 m 59.325200 27.350000 l 59.325200 28.750000 l 42.067700 28.750000 l ef
+0.000000 0.000000 0.000000 srgb
+n 42.067700 27.350000 m 59.325200 27.350000 l 59.325200 28.750000 l 42.067700 28.750000 l cp s
+/Helvetica-Bold-latin1 ff 0.560000 scf sf
+/Helvetica-Bold-latin1 ff 0.700000 scf sf
+(ThreeGppSpectrumPropagationLossModel) dup sw 2 div 50.696450 ex sub 28.250000 m
+ gs 1 -1 sc sh gr
+1.000000 1.000000 1.000000 srgb
+n 42.067700 28.750000 m 59.325200 28.750000 l 59.325200 29.750000 l 42.067700 29.750000 l ef
+0.000000 0.000000 0.000000 srgb
+n 42.067700 28.750000 m 59.325200 28.750000 l 59.325200 29.750000 l 42.067700 29.750000 l cp s
+/Courier-latin1 ff 0.700000 scf sf
+/Courier-latin1 ff 0.560000 scf sf
+(+GetChannelModel\(\)) 42.217700 29.290000 m
+ gs 1 -1 sc sh gr
+0.100000 slw
+[] 0 sd
+0 slj
+0 slc
+n 50.956750 25.661803 m 50.956750 26.424847 l 50.696450 26.424847 l 50.696450 27.299695 l s
+0.100000 slw
+[] 0 sd
+0 slj
+1.000000 1.000000 1.000000 srgb
+n 51.356750 25.661803 m 50.956750 24.861803 l 50.556750 25.661803 l ef
+0.000000 0.000000 0.000000 srgb
+n 51.356750 25.661803 m 50.956750 24.861803 l 50.556750 25.661803 l cp s
+/Courier-latin1 ff 0.560000 scf sf
+0.100000 slw
+[] 0 sd
+1.000000 1.000000 1.000000 srgb
+n 45.553900 31.999900 m 56.633900 31.999900 l 56.633900 33.399900 l 45.553900 33.399900 l ef
+0.000000 0.000000 0.000000 srgb
+n 45.553900 31.999900 m 56.633900 31.999900 l 56.633900 33.399900 l 45.553900 33.399900 l cp s
+/Helvetica-Bold-latin1 ff 0.560000 scf sf
+/Helvetica-Bold-latin1 ff 0.700000 scf sf
+(MatrixBasedChannelModel) dup sw 2 div 51.093900 ex sub 32.899900 m
+ gs 1 -1 sc sh gr
+0.100000 slw
+[] 0 sd
+1.000000 1.000000 1.000000 srgb
+n 46.125100 36.609500 m 56.177600 36.609500 l 56.177600 38.009500 l 46.125100 38.009500 l ef
+0.000000 0.000000 0.000000 srgb
+n 46.125100 36.609500 m 56.177600 36.609500 l 56.177600 38.009500 l 46.125100 38.009500 l cp s
+/Helvetica-Bold-latin1 ff 0.700000 scf sf
+(ThreeGppChannelModel) dup sw 2 div 51.151350 ex sub 37.509500 m
+ gs 1 -1 sc sh gr
+1.000000 1.000000 1.000000 srgb
+n 46.125100 38.009500 m 56.177600 38.009500 l 56.177600 39.009500 l 46.125100 39.009500 l ef
+0.000000 0.000000 0.000000 srgb
+n 46.125100 38.009500 m 56.177600 38.009500 l 56.177600 39.009500 l 46.125100 39.009500 l cp s
+/Courier-latin1 ff 0.700000 scf sf
+/Courier-latin1 ff 0.560000 scf sf
+(+GetChannel\(\)) 46.275100 38.549500 m
+ gs 1 -1 sc sh gr
+0.100000 slw
+[] 0 sd
+0 slj
+0 slc
+n 51.844800 34.345703 m 51.844800 35.413600 l 51.849900 35.413600 l 51.849900 36.593300 l s
+0.100000 slw
+[] 0 sd
+0 slj
+1.000000 1.000000 1.000000 srgb
+n 52.244800 34.345703 m 51.844800 33.545703 l 51.444800 34.345703 l ef
+0.000000 0.000000 0.000000 srgb
+n 52.244800 34.345703 m 51.844800 33.545703 l 51.444800 34.345703 l cp s
+/Courier-latin1 ff 0.560000 scf sf
+0.100000 slw
+[] 0 sd
+0 slj
+0 slc
+n 51.829000 29.750000 m 51.829000 31.718900 l 51.820200 31.718900 l 51.820200 31.999900 l s
+/Courier-latin1 ff 0.560000 scf sf
+(1) 52.020200 31.639900 m
+ gs 1 -1 sc sh gr
+0.100000 slw
+[0.400000] 0 sd
+0 slj
+0 slc
+n 30.529800 28.350000 m 30.529800 34.900000 l 51.833700 34.900000 l 51.833700 36.274239 l s
+0.100000 slw
+[] 0 sd
+0 slj
+0 slc
+n 51.583700 35.641869 m 51.833700 36.441869 l 52.083700 35.641869 l s
+/Courier-latin1 ff 0.560000 scf sf
+(GetChannel) dup sw 2 div 41.181750 ex sub 34.580000 m
+ gs 1 -1 sc sh gr
+0.100000 slw
+0 slc
+[] 0 sd
+n 33.173859 12.535300 m 33.166300 24.401300 l s
+0.100000 slw
+[] 0 sd
+0 slj
+n 33.423859 12.535459 m 33.174368 11.735300 l 32.923859 12.535141 l ef
+n 33.423859 12.535459 m 33.174368 11.735300 l 32.923859 12.535141 l cp s
+/Helvetica-latin1 ff 0.560000 scf sf
+(RunTask) dup sw 2 div 33.170400 ex sub 18.343300 m
+ gs 1 -1 sc sh gr
+0.100000 slw
+[] 0 sd
+1.000000 1.000000 1.000000 srgb
+n 37.010500 2.693240 m 43.168000 2.693240 l 43.168000 4.093240 l 37.010500 4.093240 l ef
+0.000000 0.000000 0.000000 srgb
+n 37.010500 2.693240 m 43.168000 2.693240 l 43.168000 4.093240 l 37.010500 4.093240 l cp s
+/Helvetica-Bold-latin1 ff 0.560000 scf sf
+/Helvetica-Bold-latin1 ff 0.700000 scf sf
+(BeamManager) dup sw 2 div 40.089250 ex sub 3.593240 m
+ gs 1 -1 sc sh gr
+0.100000 slw
+[] 0 sd
+1.000000 1.000000 1.000000 srgb
+n 35.815000 6.950000 m 45.170000 6.950000 l 45.170000 8.350000 l 35.815000 8.350000 l ef
+0.000000 0.000000 0.000000 srgb
+n 35.815000 6.950000 m 45.170000 6.950000 l 45.170000 8.350000 l 35.815000 8.350000 l cp s
+/Helvetica-Bold-latin1 ff 0.700000 scf sf
+(RealisticBfManager) dup sw 2 div 40.492500 ex sub 7.850000 m
+ gs 1 -1 sc sh gr
+1.000000 1.000000 1.000000 srgb
+n 35.815000 8.350000 m 45.170000 8.350000 l 45.170000 10.950000 l 35.815000 10.950000 l ef
+0.000000 0.000000 0.000000 srgb
+n 35.815000 8.350000 m 45.170000 8.350000 l 45.170000 10.950000 l 35.815000 10.950000 l cp s
+/Courier-latin1 ff 0.700000 scf sf
+/Courier-latin1 ff 0.560000 scf sf
+(+SetTriggerEvent\(\)) 35.965000 8.890000 m
+ gs 1 -1 sc sh gr
+(+SetUpdatePeriodicity\(\)) 35.965000 9.690000 m
+ gs 1 -1 sc sh gr
+(+SetUpdateDelay\(\)) 35.965000 10.490000 m
+ gs 1 -1 sc sh gr
+0.100000 slw
+[] 0 sd
+0 slj
+0 slc
+n 40.089250 5.005043 m 40.089250 5.921620 l 40.492500 5.921620 l 40.492500 6.950000 l s
+0.100000 slw
+[] 0 sd
+0 slj
+1.000000 1.000000 1.000000 srgb
+n 40.489250 5.005043 m 40.089250 4.205043 l 39.689250 5.005043 l ef
+0.000000 0.000000 0.000000 srgb
+n 40.489250 5.005043 m 40.089250 4.205043 l 39.689250 5.005043 l cp s
+/Courier-latin1 ff 0.560000 scf sf
+0.100000 slw
+[0.400000] 0 sd
+0 slj
+0 slc
+n 35.350000 24.250000 m 35.350000 16.800000 l 40.492500 16.800000 l 40.492500 11.285261 l s
+0.100000 slw
+[] 0 sd
+0 slj
+0 slc
+n 40.742500 11.917631 m 40.492500 11.117631 l 40.242500 11.917631 l s
+/Courier-latin1 ff 0.560000 scf sf
+0.100000 slw
+[] 0 sd
+0 slj
+0 slc
+n 49.304100 8.847910 m 47.098800 8.847910 l 47.098800 8.850000 l 45.170000 8.850000 l s
+/Courier-latin1 ff 0.560000 scf sf
+( 1) dup sw 49.104100 ex sub 8.527910 m
+ gs 1 -1 sc sh gr
+( 1) 45.370000 8.530000 m
+ gs 1 -1 sc sh gr
+showpage

@@ -40,7 +40,7 @@ public:
     std::vector<Block> localBlockPool;                        // 持久化区块池 TODO: 模拟持久化层, 通过 Reply 阶段后写入
     int view;                                                 // 视图编号
     int nonce;                                                // 交易编号
-    int leader;                                               // 当前leader节点的编号
+    int leader;                                               // 当前leader节点的编号 默认为容器第一个节点
     int blockNumber;                                          // 当前区块号
     int nodeNums;                                             // Pbft网络总节点数目
     std::map<std::string, std::vector<int>> prepareVoteCount; // 存储prepare投票信息(至少需要收到并确认2f个), 根据摘要索引

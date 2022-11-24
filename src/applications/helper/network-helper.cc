@@ -22,11 +22,11 @@ ApplicationContainer NetworkHelper::Install(NodeContainer c) {
         // 4.need changed to a specific protocol class
         // 配置blockchain app
         // 构造PbftNode
-        Ptr<Pbft> app    = m_factory.Create<Pbft>();
-        app->nodeNums    = nodeNums;
-        int nodeId       = (*i)->GetId();
-        app->node.nodeId = nodeId;
-        app->node        = BcNode(nodeId, nodesConnectionsIps[nodeId]);
+        Ptr<Pbft> app = m_factory.Create<Pbft>();
+        app->nodeNums = nodeNums;
+        int nodeId    = (*i)->GetId();
+        app->node     = BcNode(nodeId, nodesConnectionsIps[nodeId]);
+        app->leader   = (*c.Begin())->GetId(); // 默认leader为第一个节点
         // FIXME: 此处需要更改为无线节点类型，当前是ipv4
         (*i)->AddApplication(app);
         apps.Add(app);

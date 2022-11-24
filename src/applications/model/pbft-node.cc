@@ -59,7 +59,6 @@ Pbft::Pbft(void) {
     // 初始化PbftNode对象
     this->view        = 0; // 视图编号
     this->nonce       = 0; // 当前视图的交易序号
-    this->leader      = 0; // 当前leader
     this->blockNumber = 0; // 区块高度
 }
 
